@@ -10,7 +10,7 @@ public class WebSocketService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public void sendNotification(String notification) {
-        messagingTemplate.convertAndSend("/topic/notification", notification);
+    public void getNotification(String notification) {
+
     }
 }

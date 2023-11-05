@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 public class UserCredential {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
     private String name;
     private String email;
     private String password;

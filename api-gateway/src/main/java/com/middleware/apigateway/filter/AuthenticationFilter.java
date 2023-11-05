@@ -38,11 +38,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     authHeader = authHeader.substring(7);
                 }
                 try {
-//                    //REST call to AUTH service
-                    template.getForObject("http://IDENTITY-SERVICE//validate?token" + authHeader, String.class);
-//                    jwtUtil.validateToken(authHeader);
+                    System.out.println(authHeader);
+                    //REST call to AUTH service
+//                    template.getForObject("http://localhost:8765/api/v1/auth/validate?token" + authHeader, String.class);
+                    jwtUtil.validateToken(authHeader);
 
                 } catch (Exception e) {
+                    System.out.println(e);
                     System.out.println("invalid access...!");
                     throw new RuntimeException("un authorized access to application");
                 }

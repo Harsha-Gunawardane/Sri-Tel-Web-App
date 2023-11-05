@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MessageController {
     private RabbitMQProducer producer;
 
-    public MessageController(RabbitMQProducer producer){
-        this.producer = producer;
-    }
+//    public MessageController(RabbitMQProducer producer){
+//        this.producer = producer;
+//    }
 
     @GetMapping("/publish")
     public void sendMessage(@RequestParam("message") String message){

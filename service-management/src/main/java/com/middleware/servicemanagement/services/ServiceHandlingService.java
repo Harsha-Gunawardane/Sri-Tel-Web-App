@@ -29,8 +29,8 @@ public class ServiceHandlingService {
     @Autowired
     ServiceInterface serviceInterface;
 
-    @Autowired
-    MessageController messageController;
+//    @Autowired
+//    MessageController messageController;
 
     public ResponseEntity<String> addService(ServiceModel serviceModel) {
         try {
@@ -131,8 +131,8 @@ public class ServiceHandlingService {
                         .build();
 
                 userActivatedServicesRepository.save(activatedService);
-                
-                messageController.sendMessage("Successfully activated");
+
+//                messageController.sendMessage("Successfully activated");
                 return new ResponseEntity<>("Successfully activated", HttpStatus.CREATED);
             }
 

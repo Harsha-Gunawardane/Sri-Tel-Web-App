@@ -16,7 +16,6 @@ public class BillingService {
     public Boolean makePayment(Payment payment) {
 
         try {
-            System.out.println("Hello");
             paymentRepository.save(payment);
             return true;
         } catch (Exception exception) {

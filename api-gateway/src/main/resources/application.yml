@@ -19,20 +19,20 @@ spring:
           uri: lb://SERVICE
           predicates:
             - Path=/api/v1/service/**
-#          filters:
-#            - AuthenticationFilter
+          filters:
+            - AuthenticationFilter
 
         - id: billing-service
           uri: lb://PAYMENT
           predicates:
-            - Path=/payment/**
-#          filters:
-#            - AuthenticationFilter
+            - Path=/api/v1/payment/**
+          filters:
+            - AuthenticationFilter
 
         - id: auth-service
-          uri: lb://AUTH
+          uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/auth/**
+            - Path=/api/v1/auth/**
   application:
       name: api-gateway
 

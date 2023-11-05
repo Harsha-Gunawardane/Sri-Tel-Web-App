@@ -23,6 +23,11 @@ public class AuthController {
         return "Test";
     }
 
+    @GetMapping
+    public String Test(){
+        return "Hello";
+    }
+
     @PostMapping("/register")
     public String addNewUser(@RequestBody UserCredential user) {
         System.out.println("Haaaaa------------------");

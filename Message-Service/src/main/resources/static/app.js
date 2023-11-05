@@ -21,14 +21,8 @@ function connect() {
         stompClient.subscribe('/topic/greetings', function (greeting) {
             showGreeting(JSON.parse(greeting.body));
         });
-        stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
     });
 }
-
-setInterval(() => {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
-}, 2000);
-
 
 function disconnect() {
     if (stompClient !== null) {
@@ -38,25 +32,21 @@ function disconnect() {
     console.log("Disconnected");
 }
 
+function sendName() {
+    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
+}
 
 function showGreeting(message) {
-    console.log(message);
-    let html = '';
-    message.forEach((msg) => {
-        html += "<tr><td><b>" + msg.type + "</b></td><td>" + msg.message + "</td>><td>" + msg.createdAt + "</td></tr>";
-    });
-    $("#greetings").html(html);
+    $("#greetings").append("<tr><td>" + message.message + "</td></tr>");
 }
 
 window.onload = function() {
     connect();
 };
-
-
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $( "#disconnect" ).click(function() { disconnect(); });
+    $( "#send" ).click(function() { sendName(); });
 });
 

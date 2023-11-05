@@ -1,7 +1,9 @@
 package com.middleware.servicemanagement.services;
 
+import com.middleware.servicemanagement.dto.PaymentDto;
+import com.middleware.servicemanagement.feign.ServiceInterface;
+import com.middleware.servicemanagement.models.Payment;
 import com.middleware.servicemanagement.models.ServiceModel;
-import com.middleware.servicemanagement.models.ServiceWrapper;
 import com.middleware.servicemanagement.models.UserActivatedServices;
 import com.middleware.servicemanagement.repositories.ServiceRepository;
 import com.middleware.servicemanagement.repositories.UserActivatedServicesRepository;
@@ -18,8 +20,12 @@ public class ServiceHandlingService {
 
     @Autowired
     ServiceRepository serviceRepository;
+
     @Autowired
     UserActivatedServicesRepository userActivatedServicesRepository;
+
+    @Autowired
+    ServiceInterface serviceInterface;
 
     public ResponseEntity<String> addService(ServiceModel serviceModel) {
         try {
@@ -88,25 +94,45 @@ public class ServiceHandlingService {
         }
     }
 
-    public ResponseEntity<String> activateService(UserActivatedServices activatedService) {
+    public ResponseEntity<String> activateService(PaymentDto paymentDto) {
         try {
             Integer alreadyActivatedServiceId =
                     userActivatedServicesRepository.findActivatedServiceByUserId(
-                            activatedService.getUserId(),
-                            activatedService.getServiceId()
+                            paymentDto.getUserId(), paymentDto.getServiceId()
                     );
 
             if(alreadyActivatedServiceId != null) {
                 return new ResponseEntity<>("Already activated", HttpStatus.BAD_REQUEST);
             } else {
-                // make billing
+
+                // make payment
+
+                Payment payment =
+                        Payment
+                                .builder()
+                                .userId(paymentDto.getUserId())
+                                .serviceId(paymentDto.getServiceId())
+                                .amount(paymentDto.getAmount())
+                                .build();
+
+                ResponseEntity<Boolean> isPaymentSuccess = serviceInterface.makePayment(payment);
+                System.out.println(isPaymentSuccess);
+
+                UserActivatedServices activatedService =
+                        UserActivatedServices
+                        .builder()
+                        .userId(payment.getUserId())
+                        .serviceId(paymentDto.getServiceId())
+                        .build();
+
                 userActivatedServicesRepository.save(activatedService);
                 return new ResponseEntity<>("Successfully activated", HttpStatus.CREATED);
             }
 
         } catch (Exception exception) {
-            return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     public ResponseEntity<String> deactivateService(Integer userId, Integer serviceId) {

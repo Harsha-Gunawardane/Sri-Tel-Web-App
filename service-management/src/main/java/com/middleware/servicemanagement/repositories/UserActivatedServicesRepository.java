@@ -9,18 +9,18 @@ import java.util.List;
 public interface UserActivatedServicesRepository extends JpaRepository<UserActivatedServices, Integer> {
 
     @Query(value = "SELECT u.serviceId FROM user_activated_services u " +
-            "WHERE u.userId = ?1", nativeQuery = true)
+            "WHERE u.user_id = ?1", nativeQuery = true)
     List<Integer> findAllServicesByUserId(Integer userId);
 
-    @Query(value = "SELECT u.serviceId FROM user_activated_services u " +
-            "WHERE u.userId = ?1 and u.serviceId = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM user_activated_services " +
+            "WHERE user_id = ?1 and service_id = ?2", nativeQuery = true)
     Integer findActivatedServiceByUserId(Integer userId, Integer serviceId);
 
     @Query(value = "DELETE FROM user_activated_services u " +
-            "WHERE u.userId = ?1 and u.serviceId = ?2", nativeQuery = true)
+            "WHERE u.user_id = ?1 and u.service_id = ?2", nativeQuery = true)
     Integer deleteActivatedServiceByUserId(Integer userId, Integer serviceId);
 
     @Query(value = "DELETE FROM user_activated_services " +
-            "WHERE serviceId = ?1", nativeQuery = true)
+            "WHERE service_id = ?1", nativeQuery = true)
     void deleteAllByServiceId(Integer serviceId);
 }

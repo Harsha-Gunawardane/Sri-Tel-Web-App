@@ -1,10 +1,12 @@
 package com.middleware.servicemanagement.services;
 
+import com.middleware.servicemanagement.controllers.MessageController;
 import com.middleware.servicemanagement.dto.PaymentDto;
 import com.middleware.servicemanagement.feign.ServiceInterface;
 import com.middleware.servicemanagement.models.Payment;
 import com.middleware.servicemanagement.models.ServiceModel;
 import com.middleware.servicemanagement.models.UserActivatedServices;
+import com.middleware.servicemanagement.producer.RabbitMQProducer;
 import com.middleware.servicemanagement.repositories.ServiceRepository;
 import com.middleware.servicemanagement.repositories.UserActivatedServicesRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +28,9 @@ public class ServiceHandlingService {
 
     @Autowired
     ServiceInterface serviceInterface;
+
+//    @Autowired
+//    MessageController messageController;
 
     public ResponseEntity<String> addService(ServiceModel serviceModel) {
         try {
@@ -126,6 +131,8 @@ public class ServiceHandlingService {
                         .build();
 
                 userActivatedServicesRepository.save(activatedService);
+
+//                messageController.sendMessage("Successfully activated");
                 return new ResponseEntity<>("Successfully activated", HttpStatus.CREATED);
             }
 

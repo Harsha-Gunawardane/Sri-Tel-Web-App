@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,9 +17,14 @@ public class ServiceController {
     ServiceHandlingService handlingService;
 
     @GetMapping
-    public ResponseEntity<Map> getAllServicesRelatedToUser(){
+    public ResponseEntity<List<ServiceModel>> getAllServices(){
+        return handlingService.getAllServices();
+    }
 
-        return handlingService.getAllServicesRelatedToUser(5);
+    @GetMapping("{/userId}")
+    public ResponseEntity<Map> getAllServicesRelatedToUser(@PathVariable Integer userId){
+
+        return handlingService.getAllServicesRelatedToUser(userId);
     }
 
     @PostMapping

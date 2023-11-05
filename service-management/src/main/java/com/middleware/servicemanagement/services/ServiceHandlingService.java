@@ -158,4 +158,14 @@ public class ServiceHandlingService {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
+
+    public ResponseEntity<List<ServiceModel>> getAllServices() {
+        try {
+            List<ServiceModel> allServices = serviceRepository.findAll();
+
+            return new ResponseEntity<>(allServices, HttpStatus.OK);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
